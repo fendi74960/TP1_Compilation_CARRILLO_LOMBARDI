@@ -1,6 +1,9 @@
 /* package et imports */
 package fr.usmb.m1isc.compilation.simple;
 import java_cup.runtime.Symbol;
+import java.util.HashMap;
+import java.util.Map;
+
 
 // nom de la classe a generer
 class ArithParser;
@@ -9,7 +12,7 @@ class ArithParser;
 
 action code {: 
     // pour utilisation dans les actions (classe action)
-    
+    Map<String, Integer> variables = new HashMap<>(); 
 :};
 
 
@@ -46,21 +49,28 @@ parser code {:
 :};
 
 /* symboles terminaux */
-terminal NOMBRE, POINT, PLUS, MOINS, MULT, DIVIDE, PAR_G, PAR_D, MOD,ERROR,UMINUS,LET,STRI;
+terminal NOMBRE, POINT, PLUS, MOINS, MULT, DIVIDE, PAR_G, PAR_D, MOD,ERROR,UMINUS,LET,EQ,STRI;
 
 /* non terminaux */
 non terminal expr;
-non terminal texte,expression;
+non terminal texte,expression,declaration;
 
 /* Precedences */
 precedence left PLUS, MOINS;
 precedence left MULT, DIVIDE, MOD;
 precedence left UMINUS;
+precedence left LET;
 
 /* grammaire */
 
 texte   ::= expression texte 
-          | expression   ;        
+		  | declaration texte
+		  | declaration
+          | expression   ;  
+          
+declaration ::=   LET:s EQ expr:n {: variables.put(((String)s).substring(4), (Integer)n);System.out.println(variables.values()); :} POINT 
+			;  
+			 
 expression ::= expr:e{: System.out.println(e); :} POINT |
 			error POINT;
 
@@ -78,6 +88,8 @@ expr  ::= expr:e1 PLUS expr:e2  {: RESULT=(Integer)e1+(Integer)e2; :}
           | 
           NOMBRE:n {: RESULT = (Integer) n ;:}  
           | 
+          STRI:s {: RESULT = variables.get((String)s); :}
+          |
           PAR_G expr:e PAR_D  {: RESULT = (Integer) e ;:}
           ;
           

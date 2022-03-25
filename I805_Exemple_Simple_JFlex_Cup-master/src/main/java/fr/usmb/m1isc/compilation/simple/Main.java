@@ -2,7 +2,6 @@ package fr.usmb.m1isc.compilation.simple;
 
 import java.io.FileReader;
 import java.io.InputStreamReader;
-
 import java_cup.runtime.Symbol;
 
 public class Main {

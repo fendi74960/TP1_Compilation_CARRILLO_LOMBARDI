@@ -31,6 +31,9 @@ par_g = "("
 par_d = ")"
 mod = "mod"
 nombre    =   [0-9]+
+let = "let"\s[a-z]+
+eq = "="
+stri = [a-z]+
 sep     =   \s
 point   =   [;]
 
@@ -47,5 +50,8 @@ point   =   [;]
 {par_g}         { return new Symbol(ArithParserSym.PAR_G, yyline, yycolumn); }
 {par_d}         { return new Symbol(ArithParserSym.PAR_D, yyline, yycolumn); }
 {mod}         { return new Symbol(ArithParserSym.MOD, yyline, yycolumn); }
+{eq}         { return new Symbol(ArithParserSym.EQ, yyline, yycolumn); }
+{let}         { return new Symbol(ArithParserSym.LET, yyline, yycolumn, String.valueOf(yytext())); }
+{stri}         { return new Symbol(ArithParserSym.STRI, yyline, yycolumn, String.valueOf(yytext())); }
 {point}         { return new Symbol(ArithParserSym.POINT, yyline, yycolumn); }
 .               { return new Symbol(ArithParserSym.ERROR, yyline, yycolumn); }
