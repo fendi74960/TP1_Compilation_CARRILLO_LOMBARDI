@@ -88,7 +88,7 @@ expr  ::= expr:e1 PLUS expr:e2  {: RESULT=(Integer)e1+(Integer)e2; :}
           | 
           NOMBRE:n {: RESULT = (Integer) n ;:}  
           | 
-          STRI:s {: RESULT = variables.get((String)s); :}
+          STRI:s {: if(variables.get((String)s)==null){System.out.println("Erreur variable non defini");} else{RESULT = variables.get((String)s);}  :}
           |
           PAR_G expr:e PAR_D  {: RESULT = (Integer) e ;:}
           ;
